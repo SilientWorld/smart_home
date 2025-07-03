@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" /> <!-- 字符编码 -->
+    <title>智能家居系统</title> <!-- 页面标题 -->
+    <link rel="stylesheet" href="style.css" /> <!-- 引入CSS样式 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- 引入Chart.js库 -->
+</head>
+
+<body>
+    <div class="header">智能家居系统</div> <!-- 头部 -->
+    <div class="subtitle">室内环境监测界面</div> <!-- 子标题 -->
+
+    <div class="center-panel"> <!-- 中间面板 -->
+        <div class="status-bar" id="status">正在连接...</div> <!-- 状态栏 -->
+        <div class="data-grid"> <!-- 数据网格 -->
+            <!-- 温度数据项 -->
+            <div class="data-item">
+                <div class="data-icon">🌡️</div> <!-- 温度图标 -->
+                <div class="data-label">温度</div> <!-- 标签 -->
+                <div class="data-value" id="temp">--</div> <!-- 数值 -->
+                <div class="data-unit">℃</div> <!-- 单位 -->
+            </div>
+
+            <!-- 湿度数据项 -->
+            <div class="data-item">
+                <div class="data-icon">💧</div>
+                <div class="data-label">湿度</div>
+                <div class="data-value" id="humi">--</div>
+                <div class="data-unit">%</div>
+            </div>
+
+            <!-- 光照强度数据项 -->
+            <div class="data-item">
+                <div class="data-icon">💡</div>
+                <div class="data-label">光照强度</div>
+                <div class="data-value" id="lux">--</div>
+                <div class="data-unit">lux</div>
+            </div>
+
+            <!-- CO₂浓度数据项 -->
+            <div class="data-item">
+                <div class="data-icon">💨</div>
+                <div class="data-label">CO₂浓度</div>
+                <div class="data-value" id="co2">--</div>
+                <div class="data-unit">ppm</div>
+            </div>
+
+            <!-- PM2.5数据项 -->
+            <div class="data-item">
+                <div class="data-icon">🌫️</div>
+                <div class="data-label">PM2.5</div>
+                <div class="data-value" id="pm2_5">--</div>
+                <div class="data-unit">μg/m³</div>
+            </div>
+
+            <!-- 蜂鸣器状态数据项 -->
+            <div class="data-item">
+                <div class="data-icon">🔔</div>
+                <div class="data-label">蜂鸣器状态</div>
+                <div class="data-value" id="ts">--</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 蜂鸣器音频 -->
+    <audio id="buzzerSound" src="./emergency-alarm-with-reverb-29431.mp3" preload="auto" loop></audio>
+
+    <!-- 图表选择器 -->
+    <div style="text-align: center; margin: 20px;">
+        <label for="chartSelect">查看趋势图：</label>
+        <select id="chartSelect">
+            <option value="temp">温度</option>
+            <option value="humi">湿度</option>
+            <option value="lux">光照强度</option>
+            <option value="co2">CO₂浓度</option>
+            <option value="pm2_5">PM2.5</option>
+        </select>
+    </div>
+
+    <!-- 图表容器 -->
+    <div class="chart-container">
+        <canvas id="tempChart" height="100"></canvas>
+        <canvas id="humiChart" height="100"></canvas>
+        <canvas id="luxChart" height="100"></canvas>
+        <canvas id="co2Chart" height="100"></canvas>
+        <canvas id="pm25Chart" height="100"></canvas>
+    </div>
+
+    <!-- 引入依赖脚本 -->
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="cloud.js"></script>
+    <script src="chart.js"></script>
+
+    <!-- 背景切换脚本 -->
+    <script>
+        const backgrounds = [
+            'linear-gradient(135deg, #e3fdf6 0%, #f9fbe7 100%)',
+            'linear-gradient(135deg, #e8f5e9 0%, #fffde7 100%)',
+            'linear-gradient(135deg, #e0f2f1 0%, #fce4ec 100%)',
+            'linear-gradient(135deg, #f3e5f5 0%, #efebe9 100%)',
+            'linear-gradient(135deg, #e3f2fd 0%, #ffebee 100%)'
+        ];
+
+        let currentBgIndex = 0;
+
+        function changeBackground() {
+            document.body.style.background = backgrounds[currentBgIndex];
+            currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
+        }
+
+        document.body.style.background = backgrounds[currentBgIndex];
+        setInterval(changeBackground, 3000);
+    </script>
+</body>
+
+</html>
